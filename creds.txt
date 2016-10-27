@@ -1,0 +1,7 @@
+Host: ec2-54-243-212-72.compute-1.amazonaws.com
+Database: d7ctrh5hg6aadj
+User: dxrwecviorvrto
+Port: 5432
+Password: BDyJHAElIeyxjSLNxI1NBYu3Z4
+Psql: heroku pg:psql --app heroku-postgres-4ba177a8 HEROKU_POSTGRESQL_BRONZE
+URL: Hide postgres://dxrwecviorvrto:BDyJHAElIeyxjSLNxI1NBYu3Z4@ec2-54-243-212-72.compute-1.amazonaws.com:5432/d7ctrh5hg6aadj
