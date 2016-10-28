@@ -1,0 +1,9 @@
+<tablenav></tablenav>
+<h1>Connected to {{dbname}}</h1>
+<h3>Load tables:</h3>
+
+<div class="table-btn-group">
+	<button ng-repeat="tablename in tablenames" class="btn btn-primary btn-block" ng-click="requestTable(tablename)">
+        {{tablename}}
+     </button>
+</div>
