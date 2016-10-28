@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 const path = require('path');
+const userCtrl = require('./userCtrl.js');
 
 //extra middleware
 const bodyParser = require('body-parser');

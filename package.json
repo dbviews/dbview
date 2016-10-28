@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "fillDB": "node src/server/addTable.js",
     "start": "nodemon src/server/server.js"
   },
   "repository": {

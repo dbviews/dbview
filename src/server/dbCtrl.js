@@ -11,7 +11,7 @@ const dbCtrl = {
     getMG: (loginObj) => { }
 }
 
-module.export = dbCtrl;
+module.exports = dbCtrl;
 
 // For Reference, loginObj should look like this:
 //

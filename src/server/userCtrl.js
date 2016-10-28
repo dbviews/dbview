@@ -13,7 +13,7 @@ userCtrl.sendDB = (req, res) => {
 
 
 
-module.export = userCtrl;
+module.exports = userCtrl;
 
 
 
