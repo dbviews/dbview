@@ -82,7 +82,7 @@ const dbCtrl = {
         columnsToAdd += ')';
 
         // Creating table and returning it.
-        return sequelize.query(`CREATE TABLE ${obj.table} ${columnsToAdd}`)
+        return sequelize.query(`CREATE TABLE IF NOT EXISTS ${obj.table} ${columnsToAdd}`)
             .then((results) => { return sequelize.query(`SELECT * FROM ${obj.table}`, { type: sequelize.QueryTypes.SELECT }) });
     }
 }
