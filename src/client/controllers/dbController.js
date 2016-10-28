@@ -1,10 +1,14 @@
 angular
-  .module('Dbview.DbController', ['ngRoute'])
-  .controller('DbController', ['$scope', '$http', '$location', 'dbService', 'tableService', dbController])
+  .module('Dbview.DbController', ['ui.router'])
+  .controller('DbController', ['$scope', '$http', '$location', 'dbService', 'tableService', '$state', '$timeout', dbController])
 
-function dbController($scope, $http, $location, dbService, tableService) {
+function dbController($scope, $http, $location, dbService, tableService, $state, $timeout) {
   $scope.tablenames = dbService.tables;
-  $scope.onlineTables = ['hi'];
+  $scope.tableData = {};
+  $scope.dbname = dbService.creds.database;
+  $scope.onlineTables = tableService.activeTables
+
+  // make post request to download a specific table
   $scope.requestTable = function (table) {
     console.log(table);
     $http({
@@ -16,9 +20,34 @@ function dbController($scope, $http, $location, dbService, tableService) {
       data: { creds: dbService.creds, table }
     })
       .then((response) => {
-        console.log(response.data);
-        dbService.activateTable(table);
-        dbService.addTableData(table, response.data);
+
+        // add this table to the nav bar
+        activateTable($scope, table, tableService);
+
+         // save the data in table service
+        tableService.addTableData(table, response.data);
       });
   }
-};
+
+  // view a specific table (actual tablename is passed via $stateParams)
+  $scope.viewTable = function (table) {
+    $timeout(() => $state.go('table', { tablename: table }), 0)
+  }
+}
+
+// add table to nav bar if not already there
+function activateTable($scope, table, tableService) {
+  if (!$scope.onlineTables.includes(table)) {
+    tableService.activateTable(table);
+    $scope.onlineTables = tableService.activeTables
+  }
+}
+
+// add table data to table service
+function addTableData($scope, table, data) {
+  console.log(data);
+  if ($scope.tableData[table] === undefined) {
+    $scope.tableData[table] = data;
+  }
+}
+

@@ -1,5 +1,5 @@
 angular
-  .module('Dbview.HomeController', ['ngRoute'])
+  .module('Dbview.HomeController', ['ui.router'])
   .controller('HomeController', ['$scope', '$http', '$location', 'dbService', HomeController])
 
 function HomeController($scope, $http, $location, dbService) {
@@ -10,8 +10,10 @@ function HomeController($scope, $http, $location, dbService) {
     password: 'BDyJHAElIeyxjSLNxI1NBYu3Z4',
     port: '5432'
   };
+
   $scope.dialects = ['postgres', 'mysql'],
 
+    // send post request to get list of all available tables, then navigate to db page
     $scope.post = function () {
       dbService.setCreds($scope.creds);
       $http({
@@ -23,11 +25,9 @@ function HomeController($scope, $http, $location, dbService) {
         data: {creds: $scope.creds},
       })
         .then((response) => {
-          console.log(response.data);
-          dbService.setTables(['Table 1', 'Table 2', 'Table 3']);
+          dbService.setTables(response.data); // save table names to dbService
           $location.path('/db');
         });
-      console.log('sending request with', $scope.creds);
     }
 }
 
