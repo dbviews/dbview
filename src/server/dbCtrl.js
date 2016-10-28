@@ -78,6 +78,7 @@ const dbCtrl = {
         // Building string of columns and column types.
         let columnsToAdd = '(';
         for (let n in obj.columns) columnsToAdd += ` ${n} ${obj.columns[n]},`;
+        columnsToAdd = columnsToAdd.slice(0, -1);
         columnsToAdd += ')';
 
         // Creating table and returning it.
