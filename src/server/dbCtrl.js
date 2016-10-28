@@ -5,8 +5,11 @@ const dbCtrl = {
         const sequelize = new Sequelize(loginObj.database, loginObj.user, loginObj.password, {
             host: loginObj.host,
             dialect: loginObj.dialect,
+            dialectOptions: {
+                ssl: true
+            }
         });
-        return sequelize.query("SELECT * FROM " + loginObj.table, { type: sequelize.QueryTypes.SELECT });
+        return sequelize.query("SELECT * FROM " + loginObj.tablename, { type: sequelize.QueryTypes.SELECT });
     },
     getMG: (loginObj) => { }
 }

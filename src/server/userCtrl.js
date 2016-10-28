@@ -5,9 +5,12 @@ const userCtrl = {};
 userCtrl.sendDB = (req, res) => {
   dbCtrl.getSQL(req.body)
   .then( (result) => {
-    res.json(result.get());
+    res.json(result);
   })
-  .catch( (err) => res.end(err) );
+  .catch( (err) => {
+    console.log(err);
+    res.end('error') 
+  });
 }
 
 
