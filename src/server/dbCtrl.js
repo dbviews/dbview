@@ -32,14 +32,17 @@ const dbCtrl = {
             dialect: obj.creds.dialect,
             dialectOptions: { ssl: true }
         });
-        let columnsToAdd;
-        for (let c in obj.valuesToInsert) columnsToAdd += ` ${c},`;
+        let columnsToAdd = ``;
+        let valuesToAdd = ``;
+        for (let n in obj.valuesToInsert) {
+            columnsToAdd += ` ${n},`;
+            valuesToAdd += ` '${obj.valuesToInsert[n]}',`;
+        }
         columnsToAdd = columnsToAdd.slice(1, -1);
         columnsToAdd = `(${columnsToAdd})`;
-        let valuesToAdd;
-        for (let v in obj.valuesToInsert) valuesToAdd += ` '${v}',`;
         valuesToAdd = valuesToAdd.slice(1, -1);
         valuesToAdd = `(${valuesToAdd})`;
+        
         // Inserting values (from the `valuesToInsert` property) and returning table.
         return sequelize.query(`INSERT INTO ${obj.table} ${columnsToAdd} VALUES ${valuesToAdd}`, { type: sequelize.QueryTypes.INSERT })
             .then((results) => { return sequelize.query(`SELECT * FROM ${obj.table}`, { type: sequelize.QueryTypes.SELECT }) });
