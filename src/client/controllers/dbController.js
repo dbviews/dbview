@@ -13,12 +13,12 @@ function dbController($scope, $http, $location, dbService, tableService) {
       headers: {
         'Content-Type': 'application/json'
       },
-      data: { connection: dbService.connection, table }
+      data: { creds: dbService.creds, table }
     })
       .then((response) => {
         console.log(response.data);
-        // dbService.setTables({ tables: ['Table 1', 'Table 2', 'Table 3'] });
-        $location.path('/db');
+        dbService.activateTable(table);
+        dbService.addTableData(table, response.data);
       });
   }
 };

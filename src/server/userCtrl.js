@@ -24,16 +24,16 @@ userCtrl.sendTable = (req, res) => {
   });  
 }
 
-// userCtrl.createTable = (req, res) => {
-//   dbCtrl.Table(req.body)
-//   .then( (result) => {
-//     res.json(result);
-//   })
-//   .catch( (err) => {
-//     console.log(err);
-//     res.end('error') 
-//   });  
-// }
+userCtrl.createTable = (req, res) => {
+  dbCtrl.Table(req.body)
+  .then( (result) => {
+    res.json(result);
+  })
+  .catch( (err) => {
+    console.log(err);
+    res.end('error') 
+  });  
+}
 
 userCtrl.insertEntry = (req, res) => {
   dbCtrl.insertRow(req.body)

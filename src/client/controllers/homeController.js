@@ -13,17 +13,18 @@ function HomeController($scope, $http, $location, dbService) {
   $scope.dialects = ['postgres', 'mysql'],
 
     $scope.post = function () {
+      dbService.setCreds($scope.creds);
       $http({
         method: 'POST',
         url: '/requestDB',
         headers: {
           'Content-Type': 'application/json'
         },
-        data: $scope.creds
+        data: {creds: $scope.creds},
       })
         .then((response) => {
           console.log(response.data);
-          dbService.setTables(response.data);
+          dbService.setTables(['Table 1', 'Table 2', 'Table 3']);
           $location.path('/db');
         });
       console.log('sending request with', $scope.creds);
