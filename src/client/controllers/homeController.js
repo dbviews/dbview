@@ -4,7 +4,7 @@ angular
 
 function HomeController($scope, $http) {
   $scope.creds = {};
-  $scope.dialects = ['Postgres', 'MySQL'],
+  $scope.dialects = ['postgres', 'mysql'],
   $scope.post = function () {
     $http({
       method: 'POST',
