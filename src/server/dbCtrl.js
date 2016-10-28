@@ -32,9 +32,16 @@ const dbCtrl = {
             dialect: obj.creds.dialect,
             dialectOptions: { ssl: true }
         });
-
+        let columnsToAdd;
+        for (let c in obj.valuesToInsert) columnsToAdd += ` ${c},`;
+        columnsToAdd = columnsToAdd.slice(1, -1);
+        columnsToAdd = `(${columnsToAdd})`;
+        let valuesToAdd;
+        for (let v in obj.valuesToInsert) valuesToAdd += ` '${v}',`;
+        valuesToAdd = valuesToAdd.slice(1, -1);
+        valuesToAdd = `(${valuesToAdd})`;
         // Inserting values (from the `valuesToInsert` property) and returning table.
-        return sequelize.query(`INSERT INTO ${obj.table} VALUES ${obj.valuesToInsert}`, { type: sequelize.QueryTypes.INSERT })
+        return sequelize.query(`INSERT INTO ${obj.table} ${columnsToAdd} VALUES ${valuesToAdd}`, { type: sequelize.QueryTypes.INSERT })
             .then((results) => { return sequelize.query(`SELECT * FROM ${obj.table}`, { type: sequelize.QueryTypes.SELECT }) });
     },
 
@@ -76,10 +83,10 @@ const dbCtrl = {
         });
 
         // Building string of columns and column types.
-        let columnsToAdd = '(';
+        let columnsToAdd = `(`;
         for (let n in obj.columns) columnsToAdd += ` ${n} ${obj.columns[n]},`;
         columnsToAdd = columnsToAdd.slice(0, -1);
-        columnsToAdd += ')';
+        columnsToAdd += `)`;
 
         // Creating table and returning it.
         return sequelize.query(`CREATE TABLE IF NOT EXISTS ${obj.table} ${columnsToAdd}`)
