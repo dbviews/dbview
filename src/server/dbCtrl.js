@@ -77,7 +77,9 @@ const dbCtrl = {
 
         // Building string of columns and column types.
         let columnsToAdd = '(';
-        for (let n in obj.columns) columnsToAdd += ` ${n} ${obj.columns[n]},`;
+        for (let n in obj.columns) {
+            if (obj.columns[n].search(/unique/i) !== -1) columnsToAdd += ` ${n} ${obj.columns[n]},`;
+        }
         columnsToAdd += ')';
 
         // Creating table and returning it.
