@@ -1,26 +1,46 @@
 const Sequelize = require('sequelize');
 
 const dbCtrl = {
-    showTables: (loginObj) => {
-        const sequelize = new Sequelize(loginObj.database, loginObj.user, loginObj.password, {
-            host: loginObj.host,
-            dialect: loginObj.dialect,
+    showTables: (obj) => {
+        const sequelize = new Sequelize(obj.creds.database, obj.creds.user, obj.creds.password, {
+            host: obj.creds.host,
+            dialect: obj.creds.dialect,
+            dialectOptions: { ssl: true }
         });
-        sequelize.query("SHOWTABLES", { type: sequelize.QueryTypes.SHOWTABLES })
-            .then((results) => { return { connection: sequelize, tables: results }; });
+        return sequelize.query("SELECT table_name FROM information_schema.tables WHERE table_schema NOT IN('pg_catalog', 'information_schema')", { type: sequelize.QueryTypes.SELECT })
+            .then((results) => { return results.map(nameObj => nameObj.table_name) });
     },
     getTable: (obj) => {
-        return obj.sequelize.query("SELECT * FROM " + obj.tablename, { type: sequelize.QueryTypes.SELECT });
+        const sequelize = new Sequelize(obj.creds.database, obj.creds.user, obj.creds.password, {
+            host: obj.creds.host,
+            dialect: obj.creds.dialect,
+            dialectOptions: { ssl: true }
+        });
+        return sequelize.query("SELECT * FROM " + obj.table, { type: sequelize.QueryTypes.SELECT });
     },
     insertRow: (obj) => {
-        obj.sequelize.query("INSERT INTO " + tablename + " VALUES " + obj.valuesToInsert,
-            { type: obj.sequelize.QueryTypes.INSERT })
-            .then(() => { return obj.sequelize.query("SELECT * FROM " + obj.tablename, { type: obj.sequelize.QueryTypes.SELECT }); });
+        const sequelize = new Sequelize(obj.creds.database, obj.creds.user, obj.creds.password, {
+            host: obj.creds.host,
+            dialect: obj.creds.dialect,
+            dialectOptions: { ssl: true }
+        });
+        const inserted = new Promise((resolve, reject) => {
+            resolve(sequelize.query("INSERT INTO " + obj.table + " VALUES " + obj.valuesToInsert, { type: sequelize.QueryTypes.INSERT }));
+        }).then((results) => {
+            return sequelize.query("SELECT * FROM " + obj.table, { type: sequelize.QueryTypes.SELECT });
+        });
     },
-    updateTable: (obj) => {
-        obj.sequelize.query("UPDATE " + obj.tablename + " SET " + obj.columnsToChange + !obj.columnSelectionCondition ? "" : " WHERE " + obj.columnSelectionCondition,
-            { type: sequelize.QueryTypes.UPDATE })
-            .then(() => { return obj.sequelize.query("SELECT * FROM " + obj.tablename, { type: obj.sequelize.QueryTypes.SELECT }); });
+    deleteRow: (obj) => {
+        const sequelize = new Sequelize(obj.creds.database, obj.creds.user, obj.creds.password, {
+            host: obj.creds.host,
+            dialect: obj.creds.dialect,
+            dialectOptions: { ssl: true }
+        });
+        const deleted = new Promise((resolve, reject) => {
+            resolve(sequelize.query("INSERT INTO " + obj.table + " VALUES " + obj.valuesToInsert, { type: sequelize.QueryTypes.INSERT }));
+        }).then((results) => {
+            return sequelize.query("SELECT * FROM " + obj.table, { type: sequelize.QueryTypes.SELECT });
+        });
     },
     getMG: (loginObj) => { }
 }
