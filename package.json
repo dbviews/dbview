@@ -15,5 +15,12 @@
   "bugs": {
     "url": "https://github.com/dbviews/dbview/issues"
   },
-  "homepage": "https://github.com/dbviews/dbview#readme"
+  "homepage": "https://github.com/dbviews/dbview#readme",
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "express": "^4.14.0",
+    "path": "^0.12.7",
+    "pg": "^6.1.0",
+    "sequelize": "^3.24.6"
+  }
 }
