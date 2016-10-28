@@ -1,15 +1,26 @@
 const Sequelize = require('sequelize');
 
 const dbCtrl = {
-    getSQL: (loginObj) => {
+    showTables: (loginObj) => {
         const sequelize = new Sequelize(loginObj.database, loginObj.user, loginObj.password, {
             host: loginObj.host,
             dialect: loginObj.dialect,
-            dialectOptions: {
-                ssl: true
-            }
         });
-        return sequelize.query("SELECT * FROM " + loginObj.tablename, { type: sequelize.QueryTypes.SELECT });
+        sequelize.query("SHOWTABLES", { type: sequelize.QueryTypes.SHOWTABLES })
+            .then((results) => { return { connection: sequelize, tables: results }; });
+    },
+    getTable: (obj) => {
+        return obj.sequelize.query("SELECT * FROM " + obj.tablename, { type: sequelize.QueryTypes.SELECT });
+    },
+    insertRow: (obj) => {
+        obj.sequelize.query("INSERT INTO " + tablename + " VALUES " + obj.valuesToInsert,
+            { type: obj.sequelize.QueryTypes.INSERT })
+            .then(() => { return obj.sequelize.query("SELECT * FROM " + obj.tablename, { type: obj.sequelize.QueryTypes.SELECT }); });
+    },
+    updateTable: (obj) => {
+        obj.sequelize.query("UPDATE " + obj.tablename + " SET " + obj.columnsToChange + !obj.columnSelectionCondition ? "" : " WHERE " + obj.columnSelectionCondition,
+            { type: sequelize.QueryTypes.UPDATE })
+            .then(() => { return obj.sequelize.query("SELECT * FROM " + obj.tablename, { type: obj.sequelize.QueryTypes.SELECT }); });
     },
     getMG: (loginObj) => { }
 }
