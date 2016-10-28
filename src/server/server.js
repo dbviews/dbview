@@ -6,13 +6,9 @@ const path = require('path');
 const bodyParser = require('body-parser');
 
 app.use(bodyParser.urlencoded({extended: true}), bodyParser.json());
-app.use(express.static(path.join(__dirname, './../client/')));
+app.use(express.static(path.join(__dirname, '../../node_modules/')));
+app.use(express.static(path.join(__dirname, '../client/')));
 
 app.post('/requestDB', userCtrl.sendDB);
 
 app.listen(3000, ()=> console.log('listening on port 3000'));
-
-
-
-
-
