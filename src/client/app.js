@@ -3,8 +3,11 @@ const app = angular
     'ngRoute',
     'Dbview.HomeController',
     'Dbview.TableController',
+    'Dbview.DbController',
     'Dbview.tableService',
-    'ui.grid'
+    'Dbview.dbService',
+    'ui.grid',
+    'tablenav',
   ]);
 
 app.config(configFunction);
@@ -19,5 +22,9 @@ function configFunction($routeProvider, $locationProvider) {
     .when('/table', {
       templateUrl: './partials/table.html',
       controller: 'TableController'
+    })
+    .when('/db', {
+      templateUrl: './partials/tableselect.html',
+      controller: 'DbController'
     })
 }

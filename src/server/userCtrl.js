@@ -14,8 +14,6 @@ userCtrl.sendDB = (req, res) => {
 }
 
 
-
-
 module.exports = userCtrl;
 
 
