@@ -3,4 +3,50 @@
 
 <div class='table-viewer'>
 	<div ui-grid='{data: dataToRender}' class='grid'></div>
+	<br>
+	<select ng-model="queryType" ng-options="query for query in queryOptions"><option value="" selected>Please select a query type</option></select> <br>
+	<form name="values">
+
+		<div ng-if="queryType==='Update Rows' || queryType==='Insert Rows'">
+			<div ng-if="queryType==='Update Rows'">
+				WHERE clause
+				<input type="text" ng-model="query"/><br>
+			</div>
+			Column Name
+			<input type="text" ng-model="columnName">{{columnName}}</input><br>
+			Value
+			<input type="text" ng-model="value"></input><br>
+			<button ng-click="saveEntry()">Add Entry</button>
+		</div>
+
+		<div ng-if="queryType==='Create Table'">
+			Column Name
+			<input type="text" ng-model="column"></input><br>
+			<select  ng-model="dataType" ng-options="data for data in dataTypes"><option value="" selected>Data Type</option></select> <br>
+			<button ng-click="addColumn()">Add Column</button>
+		</div>
+
+		<div ng-if="queryType==='Text Query'">
+			Query
+			<input type="text" ng-model="query"></input><br>
+		</div>
+
+		<div ng-if="queryType==='Delete Rows'">
+			Query
+			<input type="text" ng-model="query"></input><br>
+		</div>
+
+		<div ng-if="queryType==='Drop Table'">
+			Table Name
+			<input type="text" ng-model="query"></input><br>
+		</div>
+
+		<br>
+		<button ng-click="submitQuery()">Submit</button>
+		<br>
+		<button ng-click="reset()">Reset</button>
+		
+		<div ng-repeat="row in rowsToAdd">{{row}}{{rowsToAdd[row]}}</div>
+
+	</form>
 </div>
