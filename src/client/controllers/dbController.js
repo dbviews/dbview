@@ -5,7 +5,6 @@ angular
 function dbController($scope, $http, $location, dbService, tableService, $state, $timeout) {
   $scope.tablenames = dbService.tables;
   $scope.tableData = {};
-  $scope.dbname = dbService.creds.database;
   $scope.onlineTables = tableService.activeTables
 
   // make post request to download a specific table
@@ -24,14 +23,14 @@ function dbController($scope, $http, $location, dbService, tableService, $state,
         // add this table to the nav bar
         activateTable($scope, table, tableService);
 
-         // save the data in table service
+        // save the data in table service
         tableService.addTableData(table, response.data);
       });
   }
 
   // view a specific table (actual tablename is passed via $stateParams)
   $scope.viewTable = function (table) {
-    $timeout(() => $state.go('table', { tablename: table }), 0)
+    $state.go('table', { tablename: table })
   }
 }
 
