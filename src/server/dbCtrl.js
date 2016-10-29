@@ -55,15 +55,11 @@ const dbCtrl = {
             dialect: obj.creds.dialect,
             dialectOptions: { ssl: true }
         });
-        // Deleting row and returning table.
-        let rowsToDelete = '';
-        for (let n in obj.columns) {
-            rowsToDelete += ` AND ${n}=` + (typeof obj.columns[n] === 'number' ? `${obj.columns[n]}` : `'${obj.columns[n]}'`);
-        }
-        rowsToDelete = rowsToDelete.slice(5);
-        return sequelize.query(`DELETE FROM ${obj.table} WHERE ` + rowsToDelete, { type: sequelize.QueryTypes.DELETE })
+        
+        return sequelize.query(`DELETE FROM ${obj.table} WHERE ${obj.where}`, { type: sequelize.QueryTypes.DELETE })
             .then((results) => { return sequelize.query(`SELECT * FROM ${obj.table}`, { type: sequelize.QueryTypes.SELECT }) });
     },
+
     updateRow: (obj) => {
         // Object being passed in from userCtrl has a `creds` object that has all login credentials.
         const sequelize = new Sequelize(obj.creds.database, obj.creds.user, obj.creds.password, {
@@ -77,13 +73,8 @@ const dbCtrl = {
         for (let n in obj.valuesToInsert) columnsToUpdate += ` ${n}=${obj.valuesToInsert[n]},`;
         columnsToUpdate = columnsToUpdate.slice(1, -1);
 
-        let columnsChosen = '';
-        for (let n in obj.columns) {
-            columnsChosen += ` AND ${n}=` + (typeof obj.columns[n] === 'number' ? `${obj.columns[n]}` : `'${obj.columns[n]}'`);
-        }
-
         // Updating row and returning table.
-        return sequelize.query(`UPDATE ${obj.table} SET ${columnsToUpdate} WHERE ${columnsChosen}`, { type: sequelize.QueryTypes.UPDATE })
+        return sequelize.query(`UPDATE ${obj.table} SET ${columnsToUpdate} WHERE ${obj.where}`, { type: sequelize.QueryTypes.UPDATE })
             .then((results) => { return sequelize.query(`SELECT * FROM ${obj.table}`, { type: sequelize.QueryTypes.SELECT }) });
     },
 
