@@ -69,6 +69,17 @@ userCtrl.deleteEntry = (req, res) => {
   });  
 }
 
+userCtrl.rawQuery = (req, res) => {
+  dbCtrl.commandLine(req.body)
+  .then( (result) => {
+    res.json(result);
+  })
+  .catch( (err) => {
+    console.log(err);
+    res.end('error') 
+  }); 
+}
+
 module.exports = userCtrl;
 
 
