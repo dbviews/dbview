@@ -74,10 +74,16 @@ const dbCtrl = {
 
         // Building string of columns tp update.
         let columnsToUpdate = '';
-        for (let n in obj.columns) columnsToUpdate += ` ${n}=${obj.columns[n]},`;
+        for (let n in obj.valuesToInsert) columnsToUpdate += ` ${n}=${obj.valuesToInsert[n]},`;
         columnsToUpdate = columnsToUpdate.slice(1, -1);
+
+        let columnsChosen = '';
+        for (let n in obj.columns) {
+            columnsChosen += ` AND ${n}=` + (typeof obj.columns[n] === 'number' ? `${obj.columns[n]}` : `'${obj.columns[n]}'`);
+        }
+
         // Updating row and returning table.
-        return sequelize.query(`UPDATE ${obj.table} SET ${columnsToUpdate} WHERE ${obj.key}='${obj.value}'`, { type: sequelize.QueryTypes.UPDATE })
+        return sequelize.query(`UPDATE ${obj.table} SET ${columnsToUpdate} WHERE ${columnsChosen}`, { type: sequelize.QueryTypes.UPDATE })
             .then((results) => { return sequelize.query(`SELECT * FROM ${obj.table}`, { type: sequelize.QueryTypes.SELECT }) });
     },
 
