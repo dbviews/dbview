@@ -3,6 +3,7 @@ angular
   .controller('TableController', ['$scope', 'tableService', '$stateParams', 'dbService', '$http', tableController])
 
 function tableController($scope, tableService, $stateParams, dbService, $http) {
+  //scope.name is the name of the table currently on display
   $scope.name = $stateParams.tablename;
   $scope.dataToDisplay = tableService.getData($scope.name);
   $scope.query = '';
@@ -21,7 +22,7 @@ function tableController($scope, tableService, $stateParams, dbService, $http) {
   $scope.executeQuery = function () {
     $http({
       method: 'POST',
-      url: '/requestTable',
+      url: '/query',
       headers: {
         'Content-Type': 'application/json'
       },
