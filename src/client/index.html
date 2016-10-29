@@ -6,20 +6,28 @@
 	<title></title>
 
 	<script type="text/javascript" src="./angular/angular.min.js"></script>
-	<script type="text/javascript" src="./angular-route/angular-route.min.js"></script>
 	<script type="text/javascript" src="./controllers/homeController.js"></script>
+	<script type="text/javascript" src="./angular-ui-router/release/angular-ui-router.min.js"></script>
 	<script type="text/javascript" src="./controllers/tableController.js"></script>
+	<script type="text/javascript" src="./controllers/dbController.js"></script>
 	<script type="text/javascript" src="./services/tableService.js"></script>
+	<script type="text/javascript" src="./services/dbService.js"></script>
+	<script type="text/javascript" src="./directives/tablenav.js"></script>
 	<script type="text/javascript" src="./angular-ui-grid/ui-grid.min.js"></script>
+	<script type="text/javascript" src="./angular-loading-bar/build/loading-bar.min.js"></script>
+	<link rel="styleSheet" href="./angular-loading-bar/build/loading-bar.min.css" />
+
 	<link rel="styleSheet" href="./angular-ui-grid/ui-grid.min.css" />
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+		crossorigin="anonymous">
 	<script type="text/javascript" src="./app.js"></script>
-	<!--<link rel="stylesheet" href="style.css">-->
+	<link rel="stylesheet" href="./styles/style.css">
 </head>
 
 <body ng-app='app'>
 	<!--Notice the link with the octothorpe first-->
 	<!--Our templates are rendered here-->
-	<div class="container" ng-view></div>
+	<div class="container" ui-view></div>
 
 </body>
 

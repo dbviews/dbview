@@ -69,8 +69,6 @@ userCtrl.deleteEntry = (req, res) => {
   });  
 }
 
-
-
 module.exports = userCtrl;
 
 

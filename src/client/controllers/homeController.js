@@ -1,8 +1,8 @@
 angular
-  .module('Dbview.HomeController', ['ngRoute'])
-  .controller('HomeController', ['$scope', '$http', '$location', 'tableService', HomeController])
+  .module('Dbview.HomeController', ['ui.router'])
+  .controller('HomeController', ['$scope', '$http', '$location', 'dbService', HomeController])
 
-function HomeController($scope, $http, $location, tableService) {
+function HomeController($scope, $http, $location, dbService) {
   $scope.creds = {
     host: 'ec2-54-243-212-72.compute-1.amazonaws.com',
     database: 'd7ctrh5hg6aadj',
@@ -10,22 +10,24 @@ function HomeController($scope, $http, $location, tableService) {
     password: 'BDyJHAElIeyxjSLNxI1NBYu3Z4',
     port: '5432'
   };
+
   $scope.dialects = ['postgres', 'mysql'],
+
+    // send post request to get list of all available tables, then navigate to db page
     $scope.post = function () {
+      dbService.setCreds($scope.creds);
       $http({
         method: 'POST',
         url: '/requestDB',
         headers: {
           'Content-Type': 'application/json'
         },
-        data: $scope.creds
+        data: {creds: $scope.creds},
       })
         .then((response) => {
-          console.log(response);
-          tableService.setData(response.data);
-          $location.path('/table');
+          dbService.setTables(response.data); // save table names to dbService
+          $location.path('/db');
         });
-      console.log('sending request with', $scope.creds);
     }
 }
 
