@@ -25,8 +25,9 @@ userCtrl.sendTable = (req, res) => {
 }
 
 userCtrl.createTable = (req, res) => {
-  dbCtrl.Table(req.body)
+  dbCtrl.createTable(req.body)
   .then( (result) => {
+    console.log(result);
     res.json(result);
   })
   .catch( (err) => {
