@@ -4,8 +4,8 @@ angular
 
 function tableController($scope, tableService, $stateParams, dbService, $http, $state, $timeout) {
   //scope.name is the name of the table currently on display
-  $scope.name = $stateParams.tablename;
-  $scope.displayName = $stateParams.tablename;
+  $scope.name = tableService.currentTable;
+  $scope.displayName = tableService.currentTable;
   $scope.dataToDisplay = tableService.getData($scope.name);
   
 

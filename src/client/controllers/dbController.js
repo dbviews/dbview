@@ -27,26 +27,29 @@ function dbController($scope, $http, $location, dbService, tableService, $state,
         tableService.addTableData(table, response.data);
       });
   }
-
   // view a specific table (actual tablename is passed via $stateParams)
   $scope.viewTable = function (table) {
-    $timeout(() => $state.go('table', { tablename: table }), 0)
+    tableService.currentTable = table;
+  }
+  // add table to nav bar if not already there
+  function activateTable($scope, table, tableService) {
+    if (!$scope.onlineTables.includes(table)) {
+      tableService.activateTable(table);
+      $scope.onlineTables = tableService.activeTables
+    }
+  }
+  // add table data to table service
+  function addTableData($scope, table, data) {
+    console.log(data);
+    if ($scope.tableData[table] === undefined) {
+      $scope.tableData[table] = data;
+    }
   }
 }
 
-// add table to nav bar if not already there
-function activateTable($scope, table, tableService) {
-  if (!$scope.onlineTables.includes(table)) {
-    tableService.activateTable(table);
-    $scope.onlineTables = tableService.activeTables
-  }
-}
 
-// add table data to table service
-function addTableData($scope, table, data) {
-  console.log(data);
-  if ($scope.tableData[table] === undefined) {
-    $scope.tableData[table] = data;
-  }
-}
+
+
+
+
 

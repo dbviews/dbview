@@ -1,5 +1,5 @@
 <ul class="nav nav-pills">
 	<li role='presentation'><a ng-href='#/db'>Table Connector</a></li>
-	<li role="presentation" ng-repeat="table in onlineTables"><a href="#" 
+	<li role="presentation" ng-repeat="table in onlineTables"><a ui-sref="table" 
 	ng-click="viewTable(table)">{{table}}</a></li>
 </ul>
