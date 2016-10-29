@@ -59,7 +59,7 @@ describe('Route integration', () => {
           .send({ creds: testLogin, table: 'users' })
           .expect('Content-Type', /application\/json/)
           .end( (err, res) => {
-            assert.equal(res.body[0].id, 1);
+            assert.equal(typeof res.body[0].id, 'number');
             done();
           });
       });
@@ -67,7 +67,7 @@ describe('Route integration', () => {
       it('creating a table creates a new table in the database', done => {
          request(HOST)
           .post('/createTable')
-          .send({ creds: testLogin, table: 'users2', columns: { id: 'serial', name: 'varchar', games: 'integer'} })
+          .send({ creds: testLogin, table: 'users2', valuesToInsert: { id: 'serial', name: 'varchar', games: 'integer', createdAt: 'time', updatedAt: 'time'} })
           .expect('Content-Type', /application\/json/)
           .end( (err, res) => {
             assert.equal(res.body instanceof Array, true);
@@ -103,6 +103,17 @@ describe('Route integration', () => {
           .end( (err, res) => {
             console.log(res.body);
             assert.equal(res.body.length, 0);
+            done();
+          });
+      });
+      it('can drop a table', done => {
+         request(HOST)
+          .post('/dropTable')
+          .send({ creds: testLogin, where: 'users2' })
+          .expect('Content-Type', /application\/json/)
+          .end( (err, res) => {
+            console.log(res.body);
+            
             done();
           });
       });

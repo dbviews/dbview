@@ -89,7 +89,7 @@ const dbCtrl = {
 
         // Building string of columns and column types.
         let columnsToAdd = `(`;
-        for (let n in obj.valuesToInsert) columnsToAdd += ` ${n} ${obj.valuesToInsert[n]},`;
+        for (let n in obj.valuesToInsert) columnsToAdd += ` "${n}" ${obj.valuesToInsert[n]},`;
         columnsToAdd = columnsToAdd.slice(0, -1);
         columnsToAdd += `)`;
 
