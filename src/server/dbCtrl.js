@@ -27,6 +27,7 @@ const dbCtrl = {
 
     insertRow: (obj) => {
         // Object being passed in from userCtrl has a `creds` object that has all login credentials.
+        //Need to find out if MySQL needs CreatedAt and UpdatedAt fields
         const sequelize = new Sequelize(obj.creds.database, obj.creds.user, obj.creds.password, {
             host: obj.creds.host,
             dialect: obj.creds.dialect,
@@ -39,9 +40,9 @@ const dbCtrl = {
             valuesToAdd += ` '${obj.valuesToInsert[n]}',`;
         }
         columnsToAdd = columnsToAdd.slice(1, -1);
-        columnsToAdd = `(${columnsToAdd})`;
+        columnsToAdd = `(${columnsToAdd}, "createdAt", "updatedAt")`;
         valuesToAdd = valuesToAdd.slice(1, -1);
-        valuesToAdd = `(${valuesToAdd})`;
+        valuesToAdd = `(${valuesToAdd}, NOW(), NOW())`;
 
         // Inserting values (from the `valuesToInsert` property) and returning table.
         return sequelize.query(`INSERT INTO ${obj.table} ${columnsToAdd} VALUES ${valuesToAdd}`, { type: sequelize.QueryTypes.INSERT })
@@ -88,7 +89,7 @@ const dbCtrl = {
 
         // Building string of columns and column types.
         let columnsToAdd = `(`;
-        for (let n in obj.columns) columnsToAdd += ` ${n} ${obj.columns[n]},`;
+        for (let n in obj.valuesToInsert) columnsToAdd += ` ${n} ${obj.valuesToInsert[n]},`;
         columnsToAdd = columnsToAdd.slice(0, -1);
         columnsToAdd += `)`;
 
@@ -106,7 +107,7 @@ const dbCtrl = {
         });
 
         // Deleting table, then returning list of table names.
-        return sequelize.query(`DROP TABLE ${obj.table}`)
+        return sequelize.query(`DROP TABLE ${obj.where}`)
             .then((results) => {
                 return sequelize.query(`SELECT table_name FROM information_schema.tables WHERE table_schema NOT IN('pg_catalog', 'information_schema')`, { type: sequelize.QueryTypes.SELECT })
                     .then((results) => { return results.map(result => result[0]) });
@@ -121,9 +122,9 @@ const dbCtrl = {
             dialectOptions: { ssl: true }
         });
         // Executing raw command
-        return sequelize.query(obj.command)
+        return sequelize.query(obj.where)
             // Return results
-            .then((results) => { return results });
+            .then((results) => { return results[0] });
     }
 }
 

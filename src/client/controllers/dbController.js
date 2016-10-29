@@ -5,7 +5,6 @@ angular
 function dbController($scope, $http, $location, dbService, tableService, $state, $timeout) {
   $scope.tablenames = dbService.tables;
   $scope.tableData = {};
-  $scope.dbname = dbService.creds.database;
   $scope.onlineTables = tableService.activeTables
 
   // make post request to download a specific table
