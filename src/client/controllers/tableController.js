@@ -1,8 +1,8 @@
 angular
   .module('Dbview.TableController', ['ui.router'])
-  .controller('TableController', ['$scope', 'tableService', '$stateParams', 'dbService', '$http', '$state', tableController])
+  .controller('TableController', ['$scope', 'tableService', '$stateParams', 'dbService', '$http', '$state', '$timeout', tableController])
 
-function tableController($scope, tableService, $stateParams, dbService, $http, $state) {
+function tableController($scope, tableService, $stateParams, dbService, $http, $state, $timeout) {
   //scope.name is the name of the table currently on display
   $scope.name = $stateParams.tablename;
   $scope.displayName = $stateParams.tablename;
@@ -15,11 +15,7 @@ function tableController($scope, tableService, $stateParams, dbService, $http, $
     enableFiltering: true,
   }
 
-  $scope.refreshTable = function (tableData) {
-    tableService.addTableData($scope.name, tableData)
-    $scope.dataToDisplay = tableService.getData($scope.name);
-  }
-
+  // execute a raw query and update displayed table
   $scope.executeQuery = function () {
     $http({
       method: 'POST',
@@ -31,17 +27,20 @@ function tableController($scope, tableService, $stateParams, dbService, $http, $
     })
       .then((response) => {
         console.log('saving new data');
-        // save the data in table service
-        console.log(response.data[0]);
+        const columns = Object.keys(response.data[0][0]).map((colname) => {
+          console.log(colname)
+          return { field: colname }
+        })
+
+        // save the data in table service and update grid data
         tableService.addTableData($scope.name, response.data[0])
-        $scope.dataToDisplay = tableService.getData($scope.name);
-        console.log('new data to display', $scope.dataToDisplay);
+        $scope.dataToDisplay  = tableService.getData($scope.name);
         $scope.gridData = {
+          columnDefs: columns,
           data: $scope.dataToDisplay,
           enableFiltering: true,
         }
         $scope.displayName = 'Query Result';
-        console.log('displaying this data: ', $scope.dataToDisplay);
       })
   };
 }
