@@ -42,7 +42,7 @@ const dbCtrl = {
         columnsToAdd = `(${columnsToAdd})`;
         valuesToAdd = valuesToAdd.slice(1, -1);
         valuesToAdd = `(${valuesToAdd})`;
-        
+
         // Inserting values (from the `valuesToInsert` property) and returning table.
         return sequelize.query(`INSERT INTO ${obj.table} ${columnsToAdd} VALUES ${valuesToAdd}`, { type: sequelize.QueryTypes.INSERT })
             .then((results) => { return sequelize.query(`SELECT * FROM ${obj.table}`, { type: sequelize.QueryTypes.SELECT }) });
@@ -57,7 +57,7 @@ const dbCtrl = {
         });
         // Deleting row and returning table.
         let rowsToDelete = '';
-        for( let n in obj.columns) {
+        for (let n in obj.columns) {
             rowsToDelete += ` AND ${n}=` + (typeof obj.columns[n] === 'number' ? `${obj.columns[n]}` : `'${obj.columns[n]}'`);
         }
         rowsToDelete = rowsToDelete.slice(5);
@@ -98,6 +98,22 @@ const dbCtrl = {
         // Creating table and returning it.
         return sequelize.query(`CREATE TABLE IF NOT EXISTS ${obj.table} ${columnsToAdd}`)
             .then((results) => { return sequelize.query(`SELECT * FROM ${obj.table}`, { type: sequelize.QueryTypes.SELECT }) });
+    },
+
+    dropTable: (obj) => {
+        // Object being passed in from userCtrl has a `creds` object that has all login credentials.
+        const sequelize = new Sequelize(obj.creds.database, obj.creds.user, obj.creds.password, {
+            host: obj.creds.host,
+            dialect: obj.creds.dialect,
+            dialectOptions: { ssl: true }
+        });
+
+        // Deleting table, then returning list of table names.
+        return sequelize.query(`DROP TABLE ${obj.table}`)
+            .then((results) => {
+                return sequelize.query(`SELECT table_name FROM information_schema.tables WHERE table_schema NOT IN('pg_catalog', 'information_schema')`, { type: sequelize.QueryTypes.SELECT })
+                    .then((results) => { return results.map(result => result[0]) });
+            });
     }
 }
 
