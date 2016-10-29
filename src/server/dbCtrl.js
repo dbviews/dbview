@@ -114,6 +114,19 @@ const dbCtrl = {
                 return sequelize.query(`SELECT table_name FROM information_schema.tables WHERE table_schema NOT IN('pg_catalog', 'information_schema')`, { type: sequelize.QueryTypes.SELECT })
                     .then((results) => { return results.map(result => result[0]) });
             });
+    },
+
+    commandLine: (obj) => {
+        // Object being passed in from userCtrl has a `creds` object that has all login credentials
+        const sequelize = new Sequelize(obj.creds.database, obj.creds.user, obj.creds.password, {
+            host: obj.creds.host,
+            dialect: obj.creds.dialect,
+            dialectOptions: { ssl: true }
+        });
+        // Executing raw command
+        return sequelize.query(obj.command)
+            // Return results
+            .then((results) => { return results });
     }
 }
 
