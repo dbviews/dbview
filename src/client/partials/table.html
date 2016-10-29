@@ -2,9 +2,42 @@
 <h1>{{displayName}}</h1>
 
 <div class='table-viewer'>
-	<div ui-grid='gridData' class='grid'></div>
-</div>
 
-<form ng-submit='executeQuery()'>
-	<input class='query-input' type='text' ng-model='query' placeholder='Execute a query' />
-</form>
+	<div ui-grid='gridData' class='grid'></div>
+	<br>
+	<select ng-model="queryType" ng-options="thing for thing in queryOptions"><option value="" selected>Please select a query type</option></select> <br>
+	<form name="values">
+
+		<div ng-if="queryType==='Create Table'">
+			Table Name
+			<input type="text" ng-model="tableToCreate"></input><br>
+			Column Name
+			<input type="text" ng-model="column"></input><br>
+			<select  ng-model="dataType" ng-options="data for data in dataTypes"><option value="" selected>Data Type</option></select> <br>
+			<button ng-click="saveEntry(column, dataType)">Add Column</button>
+		</div>
+		<div ng-if="queryType==='Text Query'">Query</div>
+		<div ng-if="queryType==='Drop Table'">Table Name</div>
+		<br>
+		<!--ng-if="queryType==='Text Query' || queryType==='Delete Rows' || queryType==='Update Rows' || queryType==='Drop Table'"-->
+		<input type="text" ng-model="query"/><br>
+		<div ng-if="queryType==='Delete Rows'">WHERE clause</div>
+
+		<div ng-if="queryType==='Update Rows' || queryType==='Insert Rows'">
+			<div ng-if="queryType==='Update Rows'">WHERE clause {{query}}</div>
+			Column Name
+			<input type="text" ng-model="columnName">{{columnName}}</input><br>
+			Value
+			<input type="text" ng-model="entryValue"></input><br>
+			<button ng-click="saveEntry(columnName, entryValue)">Add Entry</button><br>
+			<button ng-click="removeEntry(columnName, entryValue)">Remove Entry</button>
+		</div>
+
+		<button ng-click="executeQuery(query)">Submit</button><br>
+		<button ng-click="reset()">Reset</button>
+		
+		<div>{{rowsToAdd}}</div>
+
+	</form>
+	
+</div>
