@@ -74,10 +74,16 @@ const dbCtrl = {
 
         // Building string of columns tp update.
         let columnsToUpdate = '';
-        for (let n in obj.columns) columnsToUpdate += ` ${n}=${obj.columns[n]},`;
+        for (let n in obj.valuesToInsert) columnsToUpdate += ` ${n}=${obj.valuesToInsert[n]},`;
         columnsToUpdate = columnsToUpdate.slice(1, -1);
+
+        let columnsChosen = '';
+        for (let n in obj.columns) {
+            columnsChosen += ` AND ${n}=` + (typeof obj.columns[n] === 'number' ? `${obj.columns[n]}` : `'${obj.columns[n]}'`);
+        }
+
         // Updating row and returning table.
-        return sequelize.query(`UPDATE ${obj.table} SET ${columnsToUpdate} WHERE ${obj.key}='${obj.value}'`, { type: sequelize.QueryTypes.UPDATE })
+        return sequelize.query(`UPDATE ${obj.table} SET ${columnsToUpdate} WHERE ${columnsChosen}`, { type: sequelize.QueryTypes.UPDATE })
             .then((results) => { return sequelize.query(`SELECT * FROM ${obj.table}`, { type: sequelize.QueryTypes.SELECT }) });
     },
 
@@ -114,6 +120,19 @@ const dbCtrl = {
                 return sequelize.query(`SELECT table_name FROM information_schema.tables WHERE table_schema NOT IN('pg_catalog', 'information_schema')`, { type: sequelize.QueryTypes.SELECT })
                     .then((results) => { return results.map(result => result[0]) });
             });
+    },
+
+    commandLine: (obj) => {
+        // Object being passed in from userCtrl has a `creds` object that has all login credentials
+        const sequelize = new Sequelize(obj.creds.database, obj.creds.user, obj.creds.password, {
+            host: obj.creds.host,
+            dialect: obj.creds.dialect,
+            dialectOptions: { ssl: true }
+        });
+        // Executing raw command
+        return sequelize.query(obj.command)
+            // Return results
+            .then((results) => { return results });
     }
 }
 
