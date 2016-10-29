@@ -88,7 +88,7 @@ describe('Route integration', () => {
       it('can update a row in a table', done => {
          request(HOST)
           .post('/update')
-          .send({ creds: testLogin, table: 'users2', key: 'name', value: 'Clegane', columns: {'games': 8 } })
+          .send({ creds: testLogin, table: 'users2', where: `name='Clegane'`, valuesToInsert: {'games': 8 } })
           .expect('Content-Type', /application\/json/)
           .end( (err, res) => {
             assert.equal(res.body[0].games, 8);
@@ -98,7 +98,7 @@ describe('Route integration', () => {
       it('can delete a row in a table', done => {
          request(HOST)
           .post('/delete')
-          .send({ creds: testLogin, table: 'users2', columns: { name: 'Clegane' }})
+          .send({ creds: testLogin, table: 'users2', where: `name='Clegane'` })
           .expect('Content-Type', /application\/json/)
           .end( (err, res) => {
             console.log(res.body);
