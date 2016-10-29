@@ -10,7 +10,6 @@ function HomeController($scope, $http, $location, dbService) {
     password: 'BDyJHAElIeyxjSLNxI1NBYu3Z4',
     port: '5432'
   };
-  $scope.query = '';
   $scope.dialects = ['postgres', 'mysql'],
 
     // send post request to get list of all available tables, then navigate to db page
