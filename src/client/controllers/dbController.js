@@ -21,7 +21,7 @@ function dbController($scope, $http, $location, dbService, tableService, $state,
       .then((response) => {
 
         // add this table to the nav bar
-        activateTable($scope, table, tableService);
+        $scope.activateTable($scope, table, tableService);
 
          // save the data in table service
         tableService.addTableData(table, response.data);
@@ -32,19 +32,13 @@ function dbController($scope, $http, $location, dbService, tableService, $state,
     tableService.currentTable = table;
   }
   // add table to nav bar if not already there
-  function activateTable($scope, table, tableService) {
+  $scope.activateTable = function($scope, table, tableService) {
     if (!$scope.onlineTables.includes(table)) {
       tableService.activateTable(table);
       $scope.onlineTables = tableService.activeTables
     }
   }
-  // add table data to table service
-  function addTableData($scope, table, data) {
-    console.log(data);
-    if ($scope.tableData[table] === undefined) {
-      $scope.tableData[table] = data;
-    }
-  }
+
 }
 
 
