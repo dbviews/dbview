@@ -1,6 +1,6 @@
 # DBView
 
-DBView is a lightweight tool to view and manage your remotely hosted databases in the browser. While database management software such as pgAdmin is powerful, it can be overwhelming and require unecessary overhead when your only needs are viewing tables and performing standard tasks (especially for those with limited database experience). On the other hand, CLIs are lightweight, but they are not well suited to viewing data, and using them to build large queries can be frustrating. DBView was created to provide developers an easy way to acesss their databases without any installation. This project is still in the very early stages of development.
+DBView is a lightweight tool to view and manage your remotely hosted databases in the browser. While desktop database management software is powerful, it can be overwhelming and require unecessary overhead when your only needs are viewing tables and performing standard tasks (especially for those with limited database experience). On the other hand, CLIs are lightweight, but they are not well suited to viewing data, and using them to build large queries can be frustrating. DBView was created to provide developers an easy way to acesss their databases without any installation. This project is still in the very early stages of development.
 
 ## Installation
 ```
