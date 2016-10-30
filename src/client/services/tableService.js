@@ -5,15 +5,10 @@ class tableService {
     this.tableData = {};
     this.currentTable = '';
   }
-  setData(jsonData) {
-    this.rawdata = jsonData
-  }
   activateTable(tablename) {
     this.activeTables.push(tablename)
   }
   addTableData(table, data) {
-    console.log('tableservice:', data);
-    console.log('table name', table);
     this.tableData[table] = data;
   }
   getData(table) {
