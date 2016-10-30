@@ -6,7 +6,7 @@ describe('HomeController', function () {
   beforeEach(module('Dbview.HomeController'));
   beforeEach(module('Dbview.dbService'));
 
-  // inject the services we will need to run tests
+  // inject the controller and services we will need to run tests
   beforeEach(inject(function ($controller, $rootScope, $httpBackend, $location, _dbService_) {
     dbService = _dbService_; // karma accesses our own services by padding with underscores
     scope = $rootScope.$new();

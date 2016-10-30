@@ -8,7 +8,7 @@ describe('DbController', function () {
   beforeEach(module('Dbview.tableService'));
 
 
-  // inject the services we will need to run tests
+  // inject the controller and services we will need to run tests
   beforeEach(inject(function ($controller, $rootScope, $httpBackend, $location, _dbService_, _tableService_) {
     dbService = _dbService_; // karma accesses our own services by padding with underscores
     tableService = _tableService_
@@ -35,10 +35,10 @@ describe('DbController', function () {
 
     it('should call activateTable with scope, tableName, and tableService after a succesful request', function () {
       httpBackend.whenPOST('/requestTable').respond(200, { table: 'Gregor\'s Table' });
-      sinon.spy(window, 'activateTable');
+      sinon.spy(scope, 'activateTable');
       scope.requestTable('Gregor\'s SQL Table');
       httpBackend.flush();
-      expect(activateTable.calledWith(scope, 'Gregor\'s SQL Table', tableService)).to.be.ok;
+      expect(scope.activateTable.calledWith(scope, 'Gregor\'s SQL Table', tableService)).to.be.ok;
     })
 
     it('should call addTable data to save the table data in the tableService', function () {
@@ -51,26 +51,17 @@ describe('DbController', function () {
   })
 
   describe('activateTable', function () {
-
     it('should call activate table if table is not activated yet', function () {
       sinon.spy(tableService, 'activateTable')
-      activateTable(scope, 'myTable', tableService);
+      scope.activateTable(scope, 'myTable', tableService);
       expect((tableService.activateTable).calledWith('myTable')).to.be.ok;
     })
 
     it('should not call activate table if table is already activated', function () {
       sinon.spy(tableService, 'activateTable')
       scope.onlineTables = ['myTable']
-      activateTable(scope, 'myTable', tableService);
+      scope.activateTable(scope, 'myTable', tableService);
       expect((tableService.activateTable).called).to.not.be.ok;
-    })
-  })
-
-  describe('addTableData', function () {
-    it('should add table\'s data to table service if not already stored', function () {
-      sinon.spy(tableService, 'activateTable')
-      addTableData(scope, 'myTable', { a: 5 });
-      expect(scope.tableData).to.deep.equal({ 'myTable': { a: 5 } });
     })
   })
 });
