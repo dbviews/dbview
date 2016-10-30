@@ -6,7 +6,61 @@ body {
   display: block;
 }
 
+
+
 .query-input {
- width: 30%;
  margin: 50px auto 0 auto;
 }
+
+.dropdown {
+  margin-left: 10px;
+}
+#query {
+  width:100%;
+}
+
+.table-viewer input {
+  width: 100%;
+  border-radius: 3px;
+  border: 1px solid darkblue;
+  margin: 5px;
+  padding: 2px 4px;
+}
+
+.table-button {
+  width: 140px;
+  border-radius: 4px;
+  margin: 20 auto;
+}
+
+.submit-buttons {
+  margin-top: 20px;
+  width: 300px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 10px;
+}
+.query-form {
+  width: 100%;
+}
+
+.input-label {
+  margin: 5px;
+  font-weight: bold;
+  margin-bottom: 2px;
+}
+
+.dropdown {
+  margin: 5px;
+  font-size: 18px;
+  border: 2px solid grey;
+}
+
+.rows-to-add {
+  margin: 5px;
+  border: 1px solid grey;
+  border-radius: 1px;
+  width: 50%;
+  padding: 2px;
+}
+

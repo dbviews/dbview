@@ -22,7 +22,7 @@ function tableController($scope, tableService, $stateParams, dbService, $http, $
     $scope.columnName = '';
     $scope.entryValue = '';
   }
-  $scope.removeEntry = (column, value) => delete $scope.rowsToAdd[column];
+  $scope.removeEntry = (column) => delete $scope.rowsToAdd[column];
   // $scope.query = '';
   $scope.queryData = {};
 
@@ -31,7 +31,7 @@ function tableController($scope, tableService, $stateParams, dbService, $http, $
     let route;
     let tableName = $scope.name;
     switch($scope.queryType) {
-      case 'Create Table': route = '/createTable'; tableName = $scope.tableToCreate; break;
+      case 'Create Table': route = '/createTable'; break;
       case 'Insert Rows': route = '/insert'; break;
       case 'Update Rows': route = '/update'; break;
       case 'Delete Rows': route = '/delete'; break;
@@ -39,6 +39,7 @@ function tableController($scope, tableService, $stateParams, dbService, $http, $
       case 'Text Query': route = '/query'; break;
       default: return;
     }
+    console.log($scope.tableName);
 
     $http({
       method: 'POST',
